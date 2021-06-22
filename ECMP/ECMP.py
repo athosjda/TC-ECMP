@@ -1,5 +1,5 @@
 from Grafo import Grafo
-from Funcoes import *
+import scipy.special as spy
 
 import numpy as np
 
@@ -19,6 +19,6 @@ class ECMP:
             self.d[edge[1]] += 1
         
         for ele in self.d:
-            c += binomio_newton(ele, 2)
+            c += spy(ele, 2)
 
         return c > 0 and -c or s
