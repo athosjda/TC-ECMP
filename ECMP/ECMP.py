@@ -26,3 +26,11 @@ class ECMP:
             c += spy(ele, 2)
 
         return c > 0 and -c or s
+
+    def _esta_entre(x, l, r):
+        return l <= x and x < r
+
+    def linear_search(self, x):
+        for i in range(1, len(self.b)):
+            if self._esta_entre(x, self.b[i-1], self.b[i]):
+                return i-1
