@@ -3,11 +3,11 @@ from Grafo import Grafo
 
 class Emparelhamento:
     def __init__(self, G:Grafo):
+        
         self._G = G
-        self._M = []
+        self._M = [None]*(G.n+1)
 
     def emperelhamento(self):
-        self._M = [None]*(G.n+1)
         
         while True:
             p = self.caminho_aumentante()
@@ -22,7 +22,7 @@ class Emparelhamento:
         distancia = [-1]*self._G.n
         for v in self._G.vertex:
             if v not in self._M:
-                F.append(v)
+                F.append({v, []})
                 raiz[v] = v
                 distancia[v] = 0
         for e in self._G.edges:
@@ -47,3 +47,20 @@ class Emparelhamento:
                 E.remove(e)
         return P
 
+    def adiciona_na_floresta(self, F, v, w, raiz):
+        x = self._M[w]
+        F[v].append(w)
+        F.append((w, []))
+        F[w].add(x)
+        raiz[w] = raiz[v]
+        raiz[x] = raiz[v]
+
+    def contrai_blossom(self, B, w):
+        for v in self._G.vertex:
+            for u in self._G.adj[v]:
+                if u in B:
+                    u = w
+                if v in B:
+                    v = w
+                if v != u and u not in self._G.adj[v]:
+                    self._G.adj[v].append(u)
