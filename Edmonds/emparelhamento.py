@@ -37,18 +37,30 @@ def aumente(G:Grafo, M):
 
     return(P, F, H)
 
-    def construcao_3(Pf, Df, G, M):
-        Ciclo = None 
-        H = None
+def construcao_3(Pf, Df, G, M):
+    Ciclo = None 
+    H = None
+    
+    VMarcado = [-1]*(Df.n+1)
+    i = 0
+    for v in Pf:
+        if VMarcado[v] > -1:
+            ciclo = pf[VMarcado[v]:i]
+            H = Pf[:VMarcado[v]+1]
+            break
+        else:
+            VMarcado[v] = i
+            i = i+1
+    return (Pf, Ciclo, H)
 
-        VMarcado = [-1]*(Df.n+1)
-        i = 0
-        for v in Pf:
-            if VMarcado[v] > -1:
-                ciclo = pf[VMarcado[v]:i]
-                H = Pf[:VMarcado[v]+1]
-                break
-            else:
-                VMarcado[v] = i
-                i = i+1
-        return (Pf, Ciclo, H)
+def busca_caminho_aumentante(D):
+    # D é um digrafo
+
+    # Mano, isso emcapsulamento de função????????????
+    # My name is Giovanni Giorgio, but everybody calls me Giorgio! Estou louco!
+    def P(v):
+        D.Marcado[v] = True
+        Q = [v]
+        if True: # D.ExpAssoc[v] != None and (not D.Marcado[D.ExpAssoc[v]])
+            Q.append(1) # D.ExpAssoc[v]
+            return True
