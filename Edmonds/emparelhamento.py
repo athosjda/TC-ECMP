@@ -19,20 +19,21 @@ def reducao_blossom(G:Grafo, M):
 
 def aumente(G:Grafo, M):
     Df = Grafo(G.n)
+    Df.expressao_associada = [None]*(Df.n+1)
     for v in G.vertex:
         for w in G.adj[v]:
             if M[w] != v:
                 if M[w] == None:
-                    continue # Conferir na bibliografia
+                    Df.expressao_associada[v] = w
                 else:
                     e =  Df.inserir_arestas(v, M[w])
-                    # e.inter = w # Conferir na bibliografia
+                    # e.inter = w  # Conferir na bibliografia a estrutura de grafos como é definido um Nó
     
-    # Df.Exp = [True]*(Df.n) # Conferir na bibliografia a estrutura de grafos
+    Df.Exp = [True]*(Df.n+1) 
     for v in M:
         if v != None:
-            #Df.Exp[v] = False
-    Pf = BuscaCaminhoAumentante()
+            Df.Exp[v] = False
+    Pf = BuscaCaminhoAumentante(Df)
     (P, F, H) = construcao_3(Pf, Df, G, M)
 
     return(P, F, H)
@@ -45,7 +46,7 @@ def construcao_3(Pf, Df, G, M):
     i = 0
     for v in Pf:
         if VMarcado[v] > -1:
-            ciclo = pf[VMarcado[v]:i]
+            ciclo = Pf[VMarcado[v]:i]
             H = Pf[:VMarcado[v]+1]
             break
         else:
@@ -53,14 +54,28 @@ def construcao_3(Pf, Df, G, M):
             i = i+1
     return (Pf, Ciclo, H)
 
-def busca_caminho_aumentante(D):
-    # D é um digrafo
+def busca_caminho_aumentante(D:Grafo):
 
-    # Mano, isso emcapsulamento de função????????????
-    # My name is Giovanni Giorgio, but everybody calls me Giorgio! Estou louco!
     def P(v):
-        D.Marcado[v] = True
+        D.marcado[v] = True
         Q = [v]
-        if True: # D.ExpAssoc[v] != None and (not D.Marcado[D.ExpAssoc[v]])
-            Q.append(1) # D.ExpAssoc[v]
+        if D.expressao_associada[v] != None and (not D.marcado[D.expressao_associada[v]]):
+            Q.append(D.expressao_associada[v])
             return True
+        for w_no in D.N(v, "+", IterarSobreNo=True): # Revisa estrutura da classe de Grafos
+            w = w_no.Viz
+            if not D.marcado[w] and (not D.marcado[w_no.e.inter] or not w_no.e.inter in Q):
+                Q.append(w_no.e.inter)
+            if P(w):
+                return True
+            Q.pop()
+        Q.pop()
+        return False 
+
+    Q = []
+    for s in D.v():
+        if D.expressao[s]:
+            D.marcado = [False]*(D.n+1)
+            if P(s):
+                break
+    return Q
