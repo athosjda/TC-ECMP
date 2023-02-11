@@ -3,7 +3,7 @@ from Grafo import Grafo
 def emparelhamento_geral(G:Grafo):
     M = [None]*(G.n+1)
     while True:
-        P = reducao_blossom()
+        P = reducao_blossom(G, M)
         M = diferenca_simetrica(M, P) # conferir a implementação da diferença simétrica
         if len(P) == 0:
             break
