@@ -4,7 +4,7 @@ def emparelhamento_geral(G:Grafo):
     M = [None]*(G.n+1)
     while True:
         P = reducao_blossom()
-        M = DifSimetrica() # conferir a implementação da diferença simétrica
+        M = diferenca_simetrica(M, P) # conferir a implementação da diferença simétrica
         if len(P) == 0:
             break
     return M
@@ -79,3 +79,9 @@ def busca_caminho_aumentante(D:Grafo):
             if P(s):
                 break
     return Q
+
+def diferenca_simetrica(M, P):
+    MR  = [v for v in M]
+    for i in range(0, len(P), 2):
+        MR[P[i]], MR[P[i+1]] = P[i+1], P[i]
+    return MR
