@@ -4,7 +4,7 @@ class Grafo(object):
         self.m = None
         self.__orientado = orientado
 
-    def set_n(self, n):
+    def definir_n(self, n):
         self.n = n
         self.m = 0
     
