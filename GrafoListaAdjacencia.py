@@ -35,8 +35,8 @@ class GrafoListaAdjacencia(Grafo):
         e = GrafoListaAdjacencia.Aresta()
         e.v1 = u
         e.v2 = v
-        e.no1 = adicionar_lista(u, v, e, "+")
-        e.no2 = adicionar_lista(u, v, e, "-")
+        e.no1 = adicionar_lista(u, v, e, '+')
+        e.no2 = adicionar_lista(u, v, e, '-')
 
         self.m = self.m+1
 
@@ -49,3 +49,11 @@ class GrafoListaAdjacencia(Grafo):
                 no.proximo.anterior = no.anterior
         remover_lista(uv.no1)
         remover_lista(uv.no2)
+    
+    def sao_adjacentes(self, u, v):
+        tipo = '+'
+
+        for w in self.N(u, tipo):
+            if (w == v):
+                return True
+        return False
