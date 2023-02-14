@@ -39,5 +39,13 @@ class GrafoListaAdjacencia(Grafo):
         e.no2 = adicionar_lista(u, v, e, "-")
 
         self.m = self.m+1
-        
+
         return e
+    
+    def remover_aresta(self, uv):
+        def remover_lista(no):
+            no.anterior.proximo = no.proximo
+            if (no.proximo != None):
+                no.proximo.anterior = no.anterior
+        remover_lista(uv.no1)
+        remover_lista(uv.no2)
