@@ -57,3 +57,15 @@ class GrafoListaAdjacencia(Grafo):
             if (w == v):
                 return True
         return False
+
+    def N(self, v, Tipo='*', fechada=False, iterar_sobre_no=False):
+        if fechada:
+            no = GrafoListaAdjacencia.No()
+            no.vizinho = v
+            no.e = None
+            no.proximo = None
+        w = self.L[v].proximo
+        while (w != None):
+            if (tipo == '*') or (w.tipo == tipo):
+                yield w if iterar_sobre_no else w.vizinho
+                w = w.proximo
