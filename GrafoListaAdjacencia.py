@@ -3,7 +3,7 @@ from Grafo import Grafo
 class GrafoListaAdjacencia(Grafo):
 
     class No(object):
-        def __inti__(self):
+        def __init__(self):
             self.vizinho = None
             self.e = None
             self.proximo = None
@@ -17,7 +17,7 @@ class GrafoListaAdjacencia(Grafo):
         super(GrafoListaAdjacencia, self).definir_n(n)
         self.L = [None]*(self.n+1)
         for i in range(1,self.n+1):
-            self.L[i] = GrafoListaAdjacencia.No
+            self.L[i] = GrafoListaAdjacencia.No()
             self.VizinhancaDuplamenteLigada = VizinhancaDuplamenteLigada
 
     def adicionar_aresta(self, u, v):
@@ -31,6 +31,7 @@ class GrafoListaAdjacencia(Grafo):
                 self.L[u].proximo.proximo.anterior = self.L[u].proximo
             if self.orientado:
                 no.tipo = tipo
+            return no
         
         e = GrafoListaAdjacencia.Aresta()
         e.v1 = u
@@ -58,7 +59,7 @@ class GrafoListaAdjacencia(Grafo):
                 return True
         return False
 
-    def N(self, v, Tipo='*', fechada=False, iterar_sobre_no=False):
+    def N(self, v, tipo='*', fechada=False, iterar_sobre_no=False):
         if fechada:
             no = GrafoListaAdjacencia.No()
             no.vizinho = v
