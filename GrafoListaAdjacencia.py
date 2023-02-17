@@ -7,6 +7,7 @@ class GrafoListaAdjacencia(Grafo):
             self.vizinho = None
             self.e = None
             self.proximo = None
+            self.tipo = None
     
     class Aresta(object):
         def __init__(self):
@@ -52,7 +53,7 @@ class GrafoListaAdjacencia(Grafo):
         remover_lista(uv.no2)
     
     def sao_adjacentes(self, u, v):
-        tipo = '+'
+        tipo = '+' if self.orientado else '*'
 
         for w in self.N(u, tipo):
             if (w == v):
@@ -69,4 +70,4 @@ class GrafoListaAdjacencia(Grafo):
         while (w != None):
             if (tipo == '*') or (w.tipo == tipo):
                 yield w if iterar_sobre_no else w.vizinho
-                w = w.proximo
+            w = w.proximo
