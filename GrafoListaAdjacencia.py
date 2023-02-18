@@ -11,8 +11,10 @@ class GrafoListaAdjacencia(Grafo):
     
     class Aresta(object):
         def __init__(self):
-            self.v1, self.no1 = None, None
-            self.v2, self.no2 = None, None
+            self.v1 = None
+            self.no1 = None
+            self.v2 = None
+            self.no2 = None
 
     def definir_n(self, n, VizinhancaDuplamenteLigada=False):
         super(GrafoListaAdjacencia, self).definir_n(n)

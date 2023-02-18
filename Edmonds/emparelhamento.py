@@ -1,4 +1,4 @@
-from Grafo import Grafo
+from GrafoListaAdjacencia import GrafoListaAdjacencia as Grafo
 
 def emparelhamento_geral(G:Grafo):
     M = [None]*(G.n+1)
@@ -10,15 +10,16 @@ def emparelhamento_geral(G:Grafo):
     return M
 
 def reducao_blossom(G:Grafo, M):
-    (P, F, H) = aumentante()
+    (P, F, H) = aumentante(G, M)
     if len(P) > 0 and F != None:
         (GF, MF) = obter_GFMF(G, M, F, H)
         Plin = reducao_blossom(GF, MF)
         P = contrucao_1(G, GF, F, H, M, Plin)
     return P
 
-def aumente(G:Grafo, M):
-    Df = Grafo(G.n)
+def aumentante(G:Grafo, M):
+    Df = Grafo()
+    Df.definir_n(G.n)
     Df.expressao_associada = [None]*(Df.n+1)
     for v in G.vertex:
         for w in G.adj[v]:
