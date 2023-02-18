@@ -21,23 +21,68 @@ def aumentante(G:Grafo, M):
     Df = Grafo()
     Df.definir_n(G.n)
     Df.expressao_associada = [None]*(Df.n+1)
-    for v in G.vertex:
-        for w in G.adj[v]:
+    for v in G.V():
+        for w in G.N(v):
             if M[w] != v:
                 if M[w] == None:
                     Df.expressao_associada[v] = w
                 else:
-                    e =  Df.inserir_arestas(v, M[w])
-                    # e.inter = w  # Conferir na bibliografia a estrutura de grafos como é definido um Nó
+                    e =  Df.adicionar_aresta(v, M[w])
+                    e.inter = w  # Conferir na bibliografia a estrutura de grafos como é definido um Nó
     
-    Df.Exp = [True]*(Df.n+1) 
+    Df.Exp = [True]*(Df.n+1)
     for v in M:
         if v != None:
-            Df.Exp[v] = False
+            Df.expressao_associada[v] = False
     Pf = BuscaCaminhoAumentante(Df)
     (P, F, H) = construcao_3(Pf, Df, G, M)
 
-    return(P, F, H)
+    return (P, F, H)
+
+def obter_GFMF(G:Grafo, M, F, H):
+    GF:Grafo = Grafo(orientado=False)
+    GF.definir_n(G.n-len(F)+1)
+    GF.VAssocD = [None]*(GF.n+1)
+    G.VAssocO = [None]*(GF.n+1)
+    G.VizEmF = [None]*(GF.n+1)
+
+    aresta_com_flor = [False]*(G.n+1)
+
+    for v in F:
+        G.VAssocO[v] = 1
+    GF.VAssocD[1] = F[0]
+
+    n = 2
+
+    for v in G.V():
+        if (G.VAssocO[v] == None):
+            G.VAssocO[v] = n
+            GF.VAssocO[n] = v
+            n = n+1
+    
+    MF = [None]*(GF.n+1)
+
+    for v in G.V():
+        if (M[v] != None) and (G.VAssocO[v] != G.VAssocO[M[v]]):
+            MF[G.VAssocO[v]] = G.VAssocO[M[v]]
+    
+    for v in G.V():
+        for w in G.N(v):
+            if (v < w):
+                (x, y) = (v, w) if G.VAssocO[v] == 1 else (w, v)
+                if (G.VAssocO[y] != 1):
+                    if (G.VAssocO[x] == 1):
+                        if (G.VizEmF[y] == None) or (GF.VAssocD[1] == x):
+                            G.VizEmF[y] = x
+                        if not aresta_com_flor[y]:
+                            aresta_com_flor[y] = True
+                            GF.adicionar_aresta(G.VAssocO[x], G.VAssocO[y])
+                        else:
+                            GF.adicionar_aresta(G.VAssocO[x], G.VAssocO[y])
+    
+    return (GF, MF)
+
+
 
 def construcao_3(Pf, Df, G, M):
     Ciclo = None 
