@@ -14,7 +14,7 @@ def reducao_blossom(G:Grafo, M):
     if len(P) > 0 and F != None:
         (GF, MF) = obter_GFMF(G, M, F, H)
         Plin = reducao_blossom(GF, MF)
-        P = contrucao_1(G, GF, F, H, M, Plin)
+        P = construcao_1(G, GF, F, H, M, Plin)
     return P
 
 def aumentante(G:Grafo, M):
@@ -34,7 +34,7 @@ def aumentante(G:Grafo, M):
     for v in M:
         if v != None:
             Df.expressao_associada[v] = False
-    Pf = BuscaCaminhoAumentante(Df)
+    Pf = busca_caminho_aumentante(Df)
     (P, F, H) = construcao_3(Pf, Df, G, M)
 
     return (P, F, H)
@@ -83,6 +83,29 @@ def obter_GFMF(G:Grafo, M, F, H):
     return (GF, MF)
 
 
+def construcao_1(G, GF, F, H, M, PF):
+    if (len(PF) == 0):
+        return []
+    
+    P = []
+    if (PF.count(1) > 0):
+        indice = PF.index(1)
+
+    if not G.EhAresta(GF.VAssocD[1],GF.VAssocD[PF[indice+1]]):
+        PF.reverse()
+        for i in range(len(PF)):
+            if PF[i] != 1:
+                P.append(GF.VAssocD[PF[i]])
+    else:
+        indice = F.index(G.VizEmF[GF.VAssocD[PF[i-1]]])
+        if indice % 2 == 0:
+            for j in range(indice, 0, -1):
+                P.append(F[j])
+        else:
+            for j in range(indice, len(F)):
+                P.append(F[j])
+            P.append(F[0])
+    return P
 
 def construcao_3(Pf, Df, G, M):
     Ciclo = None 
