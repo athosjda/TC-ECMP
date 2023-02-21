@@ -30,6 +30,8 @@ class GrafoListaAdjacencia(Grafo):
             no.e = e
             no.proximo = self.L[u].proximo
             self.L[u].proximo = no
+            if self.VizinhancaDuplamenteLigada:
+                self.L[u].Prox.Ant = self.L[u]
             if (self.L[u].proximo.proximo != None):
                 self.L[u].proximo.proximo.anterior = self.L[u].proximo
             if self.orientado:
@@ -40,7 +42,7 @@ class GrafoListaAdjacencia(Grafo):
         e.v1 = u
         e.v2 = v
         e.no1 = adicionar_lista(u, v, e, '+')
-        e.no2 = adicionar_lista(u, v, e, '-')
+        e.no2 = adicionar_lista(v, u, e, '-')
 
         self.m = self.m+1
 

@@ -4,7 +4,7 @@ def emparelhamento_geral(G:Grafo):
     M = [None]*(G.n+1)
     while True:
         P = reducao_blossom(G, M)
-        M = diferenca_simetrica(M, P) # conferir a implementação da diferença simétrica
+        M = diferenca_simetrica(M, P)
         if len(P) == 0:
             break
     return M
@@ -28,15 +28,14 @@ def aumentante(G:Grafo, M):
                     Df.expressao_associada[v] = w
                 else:
                     e =  Df.adicionar_aresta(v, M[w])
-                    e.inter = w  # Conferir na bibliografia a estrutura de grafos como é definido um Nó
+                    e.inter = w 
     
-    Df.Exp = [True]*(Df.n+1)
+    Df.expressao = [True]*(Df.n+1)
     for v in M:
         if v != None:
-            Df.expressao_associada[v] = False
+            Df.expressao[v] = False
     Pf = busca_caminho_aumentante(Df)
     (P, F, H) = construcao_3(Pf, Df, G, M)
-
     return (P, F, H)
 
 def obter_GFMF(G:Grafo, M, F, H):
@@ -84,6 +83,7 @@ def obter_GFMF(G:Grafo, M, F, H):
 
 
 def construcao_1(G, GF, F, H, M, PF):
+
     if (len(PF) == 0):
         return []
     
@@ -124,14 +124,13 @@ def construcao_3(Pf, Df, G, M):
     return (Pf, Ciclo, H)
 
 def busca_caminho_aumentante(D:Grafo):
-
     def P(v):
         D.marcado[v] = True
-        Q = [v]
+        Q.append(v)
         if D.expressao_associada[v] != None and (not D.marcado[D.expressao_associada[v]]):
             Q.append(D.expressao_associada[v])
             return True
-        for w_no in D.N(v, "+", IterarSobreNo=True): # Revisa estrutura da classe de Grafos
+        for w_no in D.N(v, "+", iterar_sobre_no=True):
             w = w_no.Viz
             if not D.marcado[w] and (not D.marcado[w_no.e.inter] or not w_no.e.inter in Q):
                 Q.append(w_no.e.inter)
@@ -142,7 +141,7 @@ def busca_caminho_aumentante(D:Grafo):
         return False 
 
     Q = []
-    for s in D.v():
+    for s in D.V():
         if D.expressao[s]:
             D.marcado = [False]*(D.n+1)
             if P(s):
