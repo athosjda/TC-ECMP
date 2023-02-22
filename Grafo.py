@@ -17,7 +17,7 @@ class Grafo(object):
             for w in self.N(v, tipo = '+' if self.orientado else '*', iterar_sobre_no = iterar_sobre_no):
                 enumerar = True
                 if not self.orientado:
-                    wint = w if isinstance(w, int) else w.viz
-                enumerar = v < wint
-        if enumerar:
-            yield (v, w)
+                    wint = w if isinstance(w, int) else w.vizinho
+                    enumerar = v < wint
+                if enumerar:
+                    yield (v, w)
