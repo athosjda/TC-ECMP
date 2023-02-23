@@ -2,15 +2,22 @@ import random as rnd
 
 from GrafoListaAdjacencia import GrafoListaAdjacencia as Grafo
 
-def ECMP(G:Grafo):
-    #rnd.seed(1)
+def ECMP(G:Grafo, x):
+    rnd.seed(1)
     M = inicializacao(G)
     fit = avaliacao(M, G)
+    while x:
+        Ml = mutacao(M, abs(1/fit))
+        fitl =avaliacao(Ml, G)
+        if (fitl > fit):
+            M = Ml.copy()
+            fit = fitl
+        x = x-1
     return (M, fit)
 
 def inicializacao(G:Grafo):
     keys = [k for k in G.E()]
-    values = [rnd.randint(0, 1) for _ in range(len(keys))]
+    values = [(True if rnd.randint(0, 1) else False) for _ in range(len(keys))]
     return dict(zip(keys, values))
 
 def avaliacao(M, G:Grafo):
@@ -23,9 +30,16 @@ def avaliacao(M, G:Grafo):
             saturado[bit[1]] = saturado[bit[1]]+1
     
     for idx in saturado:
-        print(idx)
         if (idx >= 2):
             fit = fit*(-1)
             break
 
     return fit
+
+def mutacao(M, p):
+    Ml = M.copy()
+    for bit in M:
+        pl = rnd.random()
+        if (pl < p):
+            Ml[bit] = not Ml[bit]
+    return Ml
