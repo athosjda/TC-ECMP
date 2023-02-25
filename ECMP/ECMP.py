@@ -1,10 +1,13 @@
 import random as rnd
+from math import factorial as fact
 
 from GrafoListaAdjacencia import GrafoListaAdjacencia as Grafo
 
 def ECMP(G:Grafo, x):
     rnd.seed(1)
     M = inicializacao(G)
+    B = probabilidade(3)
+    print(B)
     fit = avaliacao(M, G)
     while x:
         Ml = mutacao(M, abs(1/fit))
@@ -43,3 +46,12 @@ def mutacao(M, p):
         if (pl < p):
             Ml[bit] = not Ml[bit]
     return Ml
+
+def probabilidade(m):
+    b = [0]*m
+    for i in range(0, m):
+        b[i] = binomial(m, i)*((1/m)**i)*((1-(1/m))**(m-i))
+    return b
+
+def binomial(a, b):
+    return fact(a)/(fact(b)*fact(a-b))
