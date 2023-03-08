@@ -1,6 +1,5 @@
 import random as rnd
 import math 
-import bisect
 
 from GrafoListaAdjacencia import GrafoListaAdjacencia as Grafo
 
