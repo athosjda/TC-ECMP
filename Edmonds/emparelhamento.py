@@ -18,7 +18,7 @@ def ReducaoFlor(G:Grafo, M):
     return P
 
 def Aumentante(G:Grafo, M):
-    Df = Grafo()
+    Df = Grafo(orientado=True)
     Df.definir_n(G.n)
     Df.expressao_associada = [None]*(Df.n+1)
     for v in G.V():
@@ -131,7 +131,7 @@ def BuscaCaminhoAumentante(D:Grafo):
             Q.append(D.expressao_associada[v])
             return True
         for w_no in D.N(v, "+", iterar_sobre_no=True):
-            w = w_no.Viz
+            w = w_no.vizinho
             if not D.Marcado[w] and (not D.Marcado[w_no.e.inter] or not w_no.e.inter in Q):
                 Q.append(w_no.e.inter)
                 if P(w):
