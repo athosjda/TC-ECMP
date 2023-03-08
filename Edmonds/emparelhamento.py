@@ -3,21 +3,21 @@ from GrafoListaAdjacencia import GrafoListaAdjacencia as Grafo
 def emparelhamento_geral(G:Grafo):
     M = [None]*(G.n+1)
     while True:
-        P = reducao_blossom(G, M)
+        P = ReducaoFlor(G, M)
         M = diferenca_simetrica(M, P)
         if len(P) == 0:
             break
     return M
 
-def reducao_blossom(G:Grafo, M):
-    (P, F, H) = aumentante(G, M)
+def ReducaoFlor(G:Grafo, M):
+    (P, F, H) = Aumentante(G, M)
     if len(P) > 0 and F != None:
         (GF, MF) = obter_GFMF(G, M, F, H)
-        Plin = reducao_blossom(GF, MF)
+        Plin = ReducaoFlor(GF, MF)
         P = construcao_1(G, GF, F, H, M, Plin)
     return P
 
-def aumentante(G:Grafo, M):
+def Aumentante(G:Grafo, M):
     Df = Grafo()
     Df.definir_n(G.n)
     Df.expressao_associada = [None]*(Df.n+1)
@@ -30,11 +30,11 @@ def aumentante(G:Grafo, M):
                     e =  Df.adicionar_aresta(v, M[w])
                     e.inter = w 
     
-    Df.expressao = [True]*(Df.n+1)
+    Df.Exp = [True]*(Df.n+1)
     for v in M:
         if v != None:
-            Df.expressao[v] = False
-    Pf = busca_caminho_aumentante(Df)
+            Df.Exp[v] = False
+    Pf = BuscaCaminhoAumentante(Df)
     (P, F, H) = construcao_3(Pf, Df, G, M)
     return (P, F, H)
 
@@ -108,7 +108,7 @@ def construcao_1(G, GF, F, H, M, PF):
     return P
 
 def construcao_3(Pf, Df, G, M):
-    Ciclo = None 
+    ciclo = None 
     H = None
     
     VMarcado = [-1]*(Df.n+1)
@@ -121,29 +121,29 @@ def construcao_3(Pf, Df, G, M):
         else:
             VMarcado[v] = i
             i = i+1
-    return (Pf, Ciclo, H)
+    return (Pf, ciclo, H)
 
-def busca_caminho_aumentante(D:Grafo):
+def BuscaCaminhoAumentante(D:Grafo):
     def P(v):
-        D.marcado[v] = True
+        D.Marcado[v] = True
         Q.append(v)
-        if D.expressao_associada[v] != None and (not D.marcado[D.expressao_associada[v]]):
+        if D.expressao_associada[v] != None and (not D.Marcado[D.expressao_associada[v]]):
             Q.append(D.expressao_associada[v])
             return True
         for w_no in D.N(v, "+", iterar_sobre_no=True):
             w = w_no.Viz
-            if not D.marcado[w] and (not D.marcado[w_no.e.inter] or not w_no.e.inter in Q):
+            if not D.Marcado[w] and (not D.Marcado[w_no.e.inter] or not w_no.e.inter in Q):
                 Q.append(w_no.e.inter)
-            if P(w):
-                return True
+                if P(w):
+                    return True
+                Q.pop()
             Q.pop()
-        Q.pop()
         return False 
 
     Q = []
     for s in D.V():
-        if D.expressao[s]:
-            D.marcado = [False]*(D.n+1)
+        if D.Exp[s]:
+            D.Marcado = [False]*(D.n+1)
             if P(s):
                 break
     return Q
