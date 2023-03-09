@@ -137,7 +137,7 @@ def BuscaCaminhoAumentante(D:Grafo):
                 if P(w):
                     return True
                 Q.pop()
-            Q.pop()
+        Q.pop()
         return False 
 
     Q = []
@@ -150,6 +150,9 @@ def BuscaCaminhoAumentante(D:Grafo):
 
 def diferenca_simetrica(M, P):
     MR  = [v for v in M]
+    #print(P)
+    #print(len(P))
     for i in range(0, len(P), 2):
-        MR[P[i]], MR[P[i+1]] = P[i+1], P[i]
+        MR[P[i]] = P[i+1]
+        MR[P[i+1]] = P[i]
     return MR
