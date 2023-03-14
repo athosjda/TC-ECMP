@@ -1,25 +1,33 @@
 import random as rnd
-import math 
 
 from GrafoListaAdjacencia import GrafoListaAdjacencia as Grafo
 
 def ECMP(G:Grafo, x):
-    rnd.seed(1)
+    t = 0
     M = inicializacao(G)
-    b = probabilidade(len(M))
     fit = avaliacao(M, G)
-    while x:
-        Ml = mutacao(M, abs(1/fit), b)
+    while fit < x and t < (G.n*20):
+        Ml = mutacao(M, 1.0/(len(M)))
         fitl =avaliacao(Ml, G)
         if (fitl > fit):
             M = Ml.copy()
             fit = fitl
-        x = x-1
+        t = t+1
+        print(fit)
     return (M, fit)
+
 
 def inicializacao(G:Grafo):
     keys = [k for k in G.E()]
-    values = [(True if rnd.randint(0, 1) else False) for _ in range(len(keys))]
+    saturados = [True]*(G.n+1)
+    values = []
+    for e in keys:
+        if rnd.randint(0, 1) and saturados[e[0]] and saturados[e[1]]:
+            values.append(True)
+        else: 
+            values.append(False)
+        saturados[e[0]] = False
+        saturados[e[1]] = False 
     return dict(zip(keys, values))
 
 def avaliacao(M, G:Grafo):
@@ -38,41 +46,17 @@ def avaliacao(M, G:Grafo):
 
     return fit if (c == 0) else c*(-1)
 
-def mutacao(M, p, b):
-    r = rnd.random()
-    t = linear_search(b, r)
+def mutacao(M, p):
     Ml = M.copy()
-    bit_m = set()
-    bit = 0
+    numM = 0
     bits = list(M.keys())
-    while t:
-        while True:
-            bit = rnd.randint(0, len(M)-1)
-            if (bit not in bit_m):
-                bit_m.add(bit)
-                break
-        Ml[bits[bit]] = not Ml[bits[bit]]
-        t = t-1
-        
-    ''' Conferir na bibliografia :v
-    for bit in M:
-        pl = rnd.random()
-        if (pl < p):
+    for bit in Ml:
+        r = rnd.random()
+        if r < p:
             Ml[bit] = not Ml[bit]
-    '''
+            numM = numM + 1
+    if numM == 0:
+        numM = numM + 1
+        bit = bits[rnd.randint(0, len(bits)-1)]
+        Ml[bit] = not Ml[bit]
     return Ml
-
-def probabilidade(m):
-    b = [0]*(m+1)
-    b[0] = 0
-    for i in range(0, m):
-        b[i+1] = (math.comb(m, i)*((1/m)**i)*((1-(1/m))**(m-i)))+b[i]
-    b[-1] = 1
-    return b
-
-def linear_search(b, r):
-    j = 1
-    for i in range(len(b)):
-        if (b[i] <= r) and (r < b[i+1]):
-            j = i+1
-    return j
