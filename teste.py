@@ -1,7 +1,7 @@
+import time
 from GrafoListaAdjacencia import GrafoListaAdjacencia
 from Edmonds.emparelhamento import emparelhamento_geral
 from ECMP.ecmp import ECMP
-import time
 
 def TamEmpa(m):
     t = 0
@@ -24,7 +24,7 @@ if __name__ == '__main__':
     #m = emparelhamento_geral(g)
     #print(TamEmpa(m))
     inicio = time.time()
-    m = ECMP(g, 2500)
+    m = ECMP(g)
     fim = time.time()
     print(m[1])
     print(f"{fim-inicio} segundos")

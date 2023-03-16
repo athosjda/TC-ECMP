@@ -2,11 +2,11 @@ import random as rnd
 
 from GrafoListaAdjacencia import GrafoListaAdjacencia as Grafo
 
-def ECMP(G:Grafo, x):
+def ECMP(G:Grafo):
     t = 0
     M = inicializacao(G)
     fit = avaliacao(M, G)
-    while fit < x and t < (G.n*20):
+    while t < (G.n*20):
         Ml = mutacao(M, 1.0/(len(M)))
         fitl =avaliacao(Ml, G)
         if (fitl > fit):
